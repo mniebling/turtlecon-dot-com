@@ -1,0 +1,23 @@
+---
+interface Props {
+	title: string
+}
+
+const { title } = Astro.props
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{title} | TurtleCon 2026</title>
+	</head>
+	<body>
+		<header>
+			<a href="/2026">TurtleCon 2026</a>
+		</header>
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>
