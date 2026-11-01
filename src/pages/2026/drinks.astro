@@ -1,9 +1,117 @@
 ---
 import Layout from '../../layouts/Layout2026.astro'
+
+interface Drink {
+	name: string
+	location?: string
+	abv?: number | number[]
+}
+
+interface Section {
+	title: string
+	drinks: Drink[]
+}
+
+const sections: Section[] = [
+	{
+		title: 'Beer',
+		drinks: [
+			{ name: 'Middlebrow "Yard Work" Kölsch', location: 'Chicago, IL', abv: 4 },
+			{ name: 'Middlebrow "Oak Forest No.2" Flanders Red', location: 'Chicago, IL', abv: 4 },
+			{ name: 'Warsteiner Pilsner', location: 'Warstein, Germany', abv: 4.8 },
+			{ name: 'Haymarket "Speakerswagon" Pils', location: 'Chicago, IL', abv: 5 },
+			{ name: 'Oxbow "Wilde Moon" Farmhouse Ale w/ Elderflower & Honey', location: 'Newcastle, ME', abv: 5 },
+			{ name: 'Two Brothers "Prairie Path" Golden Ale', location: 'Warrenville, IL', abv: 5.1 },
+			{ name: 'Art History "Good Morning Munich" Helles Lager', location: 'Geneva, IL', abv: 5.2 },
+			{ name: 'Lexington Brewing Vanilla Barrel Cream Ale', location: 'Lexington, KY', abv: 5.5 },
+			{ name: 'Third Space Brewing Oktoberfest', location: 'Milwaukee, WI', abv: 6 },
+			{ name: 'Badger State Brewing "Pumpkin Buzzy" Coffee Ale', location: 'Green Bay, WI', abv: 6 },
+			{ name: 'Maine Beer Co. Mean Old Tom', location: 'Freeport, ME', abv: 6.5 },
+			{ name: 'Art History "Major" Northeast IPA', location: 'Geneva, IL', abv: 6.6 },
+			{ name: 'Innis & Gunn Malt Cask Scottish Golden Beer', location: 'Edinburgh, Scotland', abv: 6.6 },
+			{ name: 'Trappist Rochefort Flight (6, 8, Tripel Extra)', location: 'Rochefort, Belgium', abv: [7.5, 9.2, 8.1] },
+			{ name: 'Oxbow "Liquid Swords" Barrel-Aged Farmhouse Ale', location: 'Newcastle, ME', abv: 8 },
+			{ name: 'Unibroue Brassin d\'Exception', location: 'Chambly, Québec', abv: 10 },
+			{ name: 'St. Bernardus ABT 12', location: 'Watou, Belgium', abv: 10 },
+		],
+	},
+	{
+		title: 'Cider',
+		drinks: [
+			{ name: 'Ace Perry', location: 'Sebastopol, CA', abv: 5 },
+			{ name: 'Haykin Family Calville Blanc d\'Hiver', location: 'Aurora, CO', abv: 5.9 },
+			{ name: 'Eris "Chaos Series: Raspberry Fields"', location: 'Chicago, IL', abv: 6 },
+			{ name: 'Shacksbury "Sweater Weather"', location: 'Vergennes, VT', abv: 8 },
+			{ name: 'Dupont Cidre Triple', location: 'Victot-Pontfol, France', abv: 8.5 },
+		],
+	},
+	{
+		title: 'Non-alcoholic',
+		drinks: [
+			{ name: 'Fresca' },
+			{ name: 'Waterloo' },
+			{ name: 'OFK Rice Milk' },
+			{ name: 'Mars × Joong Boo Soda (Ube, Pandan, Matcha, Yuzu)' },
+			{ name: 'Oi Ocha Golden Oolong' },
+			{ name: 'Oi Ocha Yuzu Green Tea' },
+			{ name: 'Oi Ocha Bold Green Tea' },
+			{ name: 'Woongjin Roasted Corn Tea' },
+			{ name: 'Woongjin Barley Drink' },
+			{ name: 'NamDoNongSan Bitter Melon Tea' },
+			{ name: 'Origami Sake NA Zero' },
+			{ name: 'Gruvi Bubbly Rosé NA' },
+			{ name: 'Botanic Baladin NA Malt' },
+			{ name: 'Wölffer Estate "Spring in Bottle" Sparkling Rosé' },
+			{ name: 'Wölffer Estate "Spring in Bottle" Sparkling White' },
+		],
+	},
+	{
+		title: 'Coffee & Tea',
+		drinks: [
+			{ name: 'Metric Crimson Decaf Cold Brew' },
+			{ name: 'Backlot "Flying Squirrel" Cold Brew' },
+			{ name: 'Rare Tea Cellars Masala Chai Rooibos' },
+			{ name: 'Café de olla (Café Bustelo, canela & piloncillo)' },
+		],
+	},
+]
+
+const sortKey = (abv: Drink['abv']) => [abv].flat()[0] ?? 0
+
+for (const section of sections) {
+	section.drinks.sort((a, b) => sortKey(a.abv) - sortKey(b.abv))
+}
 ---
 
 <Layout title="Drinks">
 	<h1>Drinks</h1>
-	<p>Menu coming soon.</p>
+
+	{
+		sections.map(({ title, drinks }) => (
+			<section>
+				<h2>{title}</h2>
+				<ul>
+					{drinks.map(({ name, location, abv }) => (
+						<li>
+							{name}
+							{location && (
+								<>
+									{' • '}
+									<span>{location}</span>
+								</>
+							)}
+							{abv !== undefined && (
+								<>
+									{' • '}
+									<span>{[abv].flat().join('% / ')}%</span>
+								</>
+							)}
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+
 	<a href="/2026">Back</a>
 </Layout>
