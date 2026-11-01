@@ -1,28 +1,33 @@
 {
-  "name": "turtlecon-dot-com",
-  "version": "1.0.0",
-  "description": "Website for TurtleCon, the premier Midwest gaming convention.",
-  "type": "module",
-  "main": "index.js",
-  "license": "UNLICENSED",
-  "homepage": "https://github.com/mniebling/turtlecon-dot-com#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mniebling/turtlecon-dot-com.git"
-  },
-  "scripts": {
-    "build": "astro build",
-    "dev": "astro dev",
-    "preview": "astro preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "astro": "7.4.4"
-  },
-  "devDependencies": {
-    "typescript": "7.0.2"
-  },
-  "allowScripts": {
-    "fsevents": false
-  }
+	"name": "turtlecon-dot-com",
+	"version": "1.0.0",
+	"description": "Website for TurtleCon, the premier Midwest gaming convention.",
+	"type": "module",
+	"main": "index.js",
+	"license": "UNLICENSED",
+	"homepage": "https://github.com/mniebling/turtlecon-dot-com#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mniebling/turtlecon-dot-com.git"
+	},
+	"scripts": {
+		"build": "astro build",
+		"dev": "astro dev",
+		"lint": "oxlint",
+		"preview": "astro preview",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"astro": "7.4.4"
+	},
+	"devDependencies": {
+		"@mniebling/lint-config": "0.4.0",
+		"@stylistic/eslint-plugin": "5.10.0",
+		"oxlint": "1.90.0",
+		"oxlint-tsgolint": "7.0.2005",
+		"typescript": "7.0.2"
+	},
+	"allowScripts": {
+		"fsevents": false
+	}
 }
