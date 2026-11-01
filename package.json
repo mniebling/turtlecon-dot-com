@@ -1,0 +1,16 @@
+{
+  "name": "turtlecon-dot-com",
+  "version": "1.0.0",
+  "description": "Website for TurtleCon, the premier Midwest gaming convention.",
+  "type": "module",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/mniebling/turtlecon-dot-com#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mniebling/turtlecon-dot-com.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
