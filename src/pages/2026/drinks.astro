@@ -78,17 +78,30 @@ const sections: Section[] = [
 
 const sortKey = (abv: Drink['abv']) => [abv].flat()[0] ?? 0
 
+const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
 for (const section of sections) {
 	section.drinks.sort((a, b) => sortKey(a.abv) - sortKey(b.abv))
 }
 ---
 
 <Layout title="Drinks">
-	<h1>Drinks</h1>
+	<h1 slot="heading">Drinks</h1>
+	<nav slot="toc" class="toc" aria-label="Jump to section">
+		<ul>
+			{
+				sections.map(({ title }) => (
+					<li>
+						<a href={`#${slug(title)}`}>{title}</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
 
 	{
 		sections.map(({ title, drinks }) => (
-			<section>
+			<section id={slug(title)}>
 				<h2>{title}</h2>
 				<ul>
 					{drinks.map(({ name, location, abv }) => (
@@ -96,14 +109,14 @@ for (const section of sections) {
 							{name}
 							{location && (
 								<>
-									{' • '}
-									<span>{location}</span>
+									<span class="sep" aria-hidden="true"> · </span>
+									<span class="location">{location}</span>
 								</>
 							)}
 							{abv !== undefined && (
 								<>
-									{' • '}
-									<span>{[abv].flat().join('% / ')}%</span>
+									<span class="sep" aria-hidden="true"> · </span>
+									<span class="abv">{[abv].flat().join('% / ')}%</span>
 								</>
 							)}
 						</li>
@@ -112,6 +125,4 @@ for (const section of sections) {
 			</section>
 		))
 	}
-
-	<a href="/2026">Back</a>
 </Layout>

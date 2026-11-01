@@ -1,0 +1,328 @@
+@font-face {
+	font-family: 'Cozette 2026';
+	src: url('./fonts/CozetteVector.woff2') format('woff2');
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Cozette 2026';
+	src: url('./fonts/CozetteVectorBold.woff2') format('woff2');
+	font-weight: 700;
+	font-display: swap;
+}
+
+.tc2026 {
+	--bg: #17122b;
+	--panel: #221a40;
+	--line: #4a3d85;
+	--text: #e6defa;
+	--muted: #9a8fc4;
+	--dim: #7468ad;
+	--pink: #ff9fdc;
+	--cyan: #7fe6dc;
+	--shadow: #0b0718;
+	--shadow-pink: #7a3a8f;
+
+	margin: 0;
+	background-color: var(--bg);
+	background-image: url('./shell.svg');
+	color: var(--text);
+	font-family: 'Cozette 2026', ui-monospace, monospace;
+	font-size: 13px;
+	line-height: 1.7;
+	-webkit-font-smoothing: none;
+	text-shadow: 1px 1px 0 var(--shadow);
+}
+
+.tc2026 a {
+	color: var(--cyan);
+}
+
+.tc2026 a:hover,
+.tc2026 a:focus-visible {
+	color: var(--pink);
+}
+
+.tc2026 header,
+.tc2026 main {
+	box-sizing: border-box;
+	max-width: 640px;
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+.tc2026 header {
+	padding-block: 16px 0;
+}
+
+.tc2026 .header-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.tc2026 .toc {
+	padding: 8px 16px;
+	background: var(--panel);
+	box-shadow:
+		0 -2px 0 0 var(--line),
+		0 2px 0 0 var(--line),
+		-2px 0 0 0 var(--line),
+		2px 0 0 0 var(--line);
+}
+
+.tc2026 .toc ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 16px;
+}
+
+.tc2026 .toc li {
+	padding: 0;
+	border-bottom: 0;
+	text-indent: 0;
+}
+
+.tc2026 .toc li::before {
+	content: none;
+}
+
+.tc2026 .toc a {
+	text-decoration: none;
+}
+
+.tc2026 header {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+.tc2026 .header-row {
+	align-self: stretch;
+}
+
+.tc2026 .header-row h1,
+.tc2026 .backlink {
+	margin: 0;
+	box-shadow:
+		0 -2px 0 0 var(--line),
+		0 2px 0 0 var(--line),
+		-2px 0 0 0 var(--line),
+		2px 0 0 0 var(--line);
+}
+
+.tc2026 .header-row h1 {
+	padding: 12px 16px;
+	background: var(--panel);
+}
+
+.tc2026 .backlink {
+	--line: #45424f;
+
+	padding: 4px 8px;
+	background: #25222d;
+	color: var(--muted);
+	text-decoration: none;
+}
+
+.tc2026 .backlink:hover,
+.tc2026 .backlink:focus-visible {
+	color: var(--text);
+}
+
+.tc2026 main {
+	padding-block: 16px 48px;
+}
+
+.tc2026 h1 {
+	margin: 0;
+	color: var(--pink);
+	font-size: 26px;
+	line-height: 1.3;
+	font-weight: 700;
+	text-shadow: 2px 2px 0 var(--shadow-pink);
+}
+
+.tc2026 h2 {
+	margin: 0 0 8px;
+	padding-bottom: 8px;
+	border-bottom: 1px dashed var(--line);
+	color: var(--cyan);
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+.tc2026 h2 time {
+	margin-left: 8px;
+	color: var(--muted);
+	font-weight: 400;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+/* Inventory panels: stepped pixel corners instead of rounded ones. */
+.tc2026 main section {
+	margin-bottom: 16px;
+	padding: 12px 16px;
+	background: var(--panel);
+	box-shadow:
+		0 -2px 0 0 var(--line),
+		0 2px 0 0 var(--line),
+		-2px 0 0 0 var(--line),
+		2px 0 0 0 var(--line);
+}
+
+.tc2026 main p {
+	margin: 0 0 8px;
+}
+
+.tc2026 main section p:last-child {
+	margin-bottom: 0;
+}
+
+.tc2026 ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.tc2026 li {
+	padding: 4px 0 4px 16px;
+	text-indent: -16px;
+	border-bottom: 1px dotted var(--line);
+}
+
+.tc2026 li:last-child {
+	border-bottom: 0;
+}
+
+.tc2026 li::before {
+	content: '▸ ';
+	color: var(--pink);
+}
+
+.tc2026 li .sep {
+	color: var(--dim);
+	white-space: pre;
+}
+
+.tc2026 li .location {
+	color: var(--muted);
+	white-space: nowrap;
+}
+
+.tc2026 li .abv {
+	color: var(--cyan);
+	white-space: nowrap;
+}
+
+.tc2026 main > nav {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.tc2026 main > nav a {
+	display: block;
+	padding: 14px 18px;
+	font-size: 20px;
+	line-height: 1.3;
+	background: var(--panel);
+	box-shadow:
+		0 -2px 0 0 var(--line),
+		0 2px 0 0 var(--line),
+		-2px 0 0 0 var(--line),
+		2px 0 0 0 var(--line);
+	color: var(--text);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.tc2026 main > nav a::before {
+	content: '▸ ';
+	color: var(--pink);
+}
+
+.tc2026 main > nav a:hover,
+.tc2026 main > nav a:focus-visible {
+	color: var(--pink);
+}
+
+
+/*
+ * Drifting glow: two layers, each a color gradient visible only through the
+ * shell outlines AND a big soft blob that slowly wanders, so patches of the
+ * grid shimmer and shift color.
+ */
+.tc2026::before,
+.tc2026::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	opacity: 0.28;
+	background: linear-gradient(
+		120deg,
+		#7c6bd6,
+		#5a86c8,
+		#9a64c4,
+		#7c6bd6
+	);
+	background-size: 300% 300%;
+	mask-image:
+		url('./shell-mask.svg'),
+		radial-gradient(circle, #000 0%, transparent 60%);
+	mask-size:
+		28px 49px,
+		170% 170%;
+	mask-repeat: repeat, repeat;
+	mask-composite: intersect;
+	-webkit-mask-composite: source-in;
+	animation:
+		tc2026-hue 28s ease-in-out infinite alternate,
+		tc2026-drift 40s linear infinite;
+}
+
+.tc2026::after {
+	background-position: 100% 0%;
+	mask-size:
+		28px 49px,
+		130% 130%;
+	animation-duration: 36s, 55s;
+	animation-direction: alternate-reverse, reverse;
+}
+
+@keyframes tc2026-hue {
+	to {
+		background-position: 0% 100%;
+	}
+}
+
+@keyframes tc2026-drift {
+	from {
+		mask-position:
+			0 0,
+			0% 0%;
+	}
+
+	to {
+		mask-position:
+			0 0,
+			100% 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tc2026::before,
+	.tc2026::after {
+		animation: none;
+		opacity: 0.2;
+	}
+}

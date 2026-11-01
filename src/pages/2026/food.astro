@@ -42,7 +42,7 @@ const days: Day[] = [
 ---
 
 <Layout title="Food">
-	<h1>Food</h1>
+	<h1 slot="heading">Food</h1>
 
 	{
 		days.map(({ day, date, label, main, dessert }) => (
@@ -60,6 +60,4 @@ const days: Day[] = [
 			</section>
 		))
 	}
-
-	<a href="/2026">Back</a>
 </Layout>
