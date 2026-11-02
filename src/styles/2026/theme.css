@@ -320,6 +320,44 @@
 	color: var(--pink);
 }
 
+/* Press feedback: shrink on press, overshoot-pop back on release. */
+.tc2026 .music-toggle,
+.tc2026 .backlink,
+.tc2026 main > nav a {
+	transition: transform 420ms cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+
+.tc2026 .backlink {
+	display: inline-block;
+}
+
+.tc2026 .music-toggle:active,
+.tc2026 .backlink:active,
+.tc2026 main > nav a:active {
+	transform: scale(0.94);
+	transition-duration: 90ms;
+	transition-timing-function: ease-out;
+}
+
+/* Large cards: a 6% shrink is many pixels, so use a gentler press and pop. */
+.tc2026 main > nav a {
+	transition-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.tc2026 main > nav a:active {
+	transform: scale(0.985);
+	transition-duration: 120ms;
+	transition-timing-function: ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tc2026 .music-toggle,
+	.tc2026 .backlink,
+	.tc2026 main > nav a {
+		transition: none;
+	}
+}
+
 
 /*
  * The base shell grid is a fixed layer, like the glow layers below, so all
