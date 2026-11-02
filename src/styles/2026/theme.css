@@ -347,13 +347,13 @@
 	inset: 0;
 	z-index: -1;
 	pointer-events: none;
-	opacity: 0.28;
+	opacity: 0.22;
 	background: linear-gradient(
 		120deg,
-		#7c6bd6,
-		#5a86c8,
-		#9a64c4,
-		#7c6bd6
+		#7b74a8,
+		#6c84a3,
+		#9078a3,
+		#7b74a8
 	);
 	background-size: 300% 300%;
 	mask-image:
@@ -367,7 +367,7 @@
 	-webkit-mask-composite: source-in;
 	animation:
 		tc2026-hue 28s ease-in-out infinite alternate,
-		tc2026-drift 40s linear infinite;
+		tc2026-drift 40s ease-in-out infinite alternate;
 }
 
 .tc2026::after {
@@ -376,7 +376,7 @@
 		28px 49px,
 		130% 130%;
 	animation-duration: 36s, 55s;
-	animation-direction: alternate-reverse, reverse;
+	animation-direction: alternate-reverse, alternate-reverse;
 }
 
 @keyframes tc2026-hue {

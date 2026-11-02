@@ -13,3 +13,16 @@ Metadata was stripped. Encoded with ffmpeg:
 ffmpeg -i original.mp3 -map_metadata -1 -c:a libopus -b:a 64k -vbr on -application audio morning-coffee.opus
 ffmpeg -i original.mp3 -map_metadata -1 -c:a aac -b:a 96k -movflags +faststart morning-coffee.m4a
 ```
+
+## Menu sound effects
+
+`sfx-confirm.*` plays when going forward in the menu (the Food and Drinks buttons on the home page). `sfx-back.*` plays on the "TurtleCon 2026" back link. `sfx-cursor.*` plays on the jump links on the drinks page. They only play while sound is on (the button in the top-right corner).
+
+Source: [Interface SFX Pack 1](https://obsydianx.itch.io/interface-sfx-pack-1) by obsydianx, CC0. We use `Confirm_tones/style2/confirm_style_2_echo_001.ogg`, `Back_tones/style2/back_style_2_echo_001.ogg` and `Cursor_tones/cursor_style_2.ogg`.
+
+The originals are 6 s long but fade out by about 2 s (the cursor blip by about 0.8 s), so we trim to 2 s (0.8 s for the cursor) with a short fade-out and encode each as Opus (48 kbps, about 16-18 KB) plus an AAC fallback (64 kbps), for the same reason as the music:
+
+```sh
+ffmpeg -i original.ogg -t 2 -af "afade=t=out:st=1.7:d=0.3" -map_metadata -1 -c:a libopus -b:a 48k -vbr on -application audio sfx-NAME.opus
+ffmpeg -i original.ogg -t 2 -af "afade=t=out:st=1.7:d=0.3" -map_metadata -1 -c:a aac -b:a 64k -movflags +faststart sfx-NAME.m4a
+```

@@ -2,6 +2,12 @@
 import { ClientRouter } from 'astro:transitions'
 import musicM4a from '../assets/2026/audio/morning-coffee.m4a'
 import musicOpus from '../assets/2026/audio/morning-coffee.opus'
+import sfxBackM4a from '../assets/2026/audio/sfx-back.m4a'
+import sfxBackOpus from '../assets/2026/audio/sfx-back.opus'
+import sfxConfirmM4a from '../assets/2026/audio/sfx-confirm.m4a'
+import sfxConfirmOpus from '../assets/2026/audio/sfx-confirm.opus'
+import sfxCursorM4a from '../assets/2026/audio/sfx-cursor.m4a'
+import sfxCursorOpus from '../assets/2026/audio/sfx-cursor.opus'
 import '../styles/2026/theme.css'
 
 interface Props {
@@ -10,6 +16,12 @@ interface Props {
 }
 
 const { title, backlink = true } = Astro.props
+
+const sfx = {
+	back: { opus: sfxBackOpus, m4a: sfxBackM4a },
+	confirm: { opus: sfxConfirmOpus, m4a: sfxConfirmM4a },
+	cursor: { opus: sfxCursorOpus, m4a: sfxCursorM4a },
+}
 ---
 
 <html lang="en" class="tc2026-root">
@@ -19,16 +31,16 @@ const { title, backlink = true } = Astro.props
 		<title>{title} | TurtleCon 2026</title>
 		<ClientRouter />
 	</head>
-	<body class="tc2026">
+	<body class="tc2026" data-sfx-sources={JSON.stringify(sfx)}>
 		<audio id="bgm" loop preload="none" transition:persist>
 			<source src={musicOpus} type="audio/ogg; codecs=opus" />
 			<source src={musicM4a} type="audio/mp4" />
 		</audio>
 		<header>
 			<div class="topbar">
-				{backlink && <a class="backlink" href="/2026">TurtleCon 2026</a>}
+				{backlink && <a class="backlink" href="/2026" data-sfx="back">TurtleCon 2026</a>}
 				<button class="music-toggle" type="button" aria-pressed="false" data-music-toggle>
-					♪ Music: off
+					♪ Sound: off
 				</button>
 			</div>
 			<div class="header-row">
@@ -44,30 +56,158 @@ const { title, backlink = true } = Astro.props
 				Music: <a href="https://pixabay.com/music/beats-morning-coffee-396750/">Morning Coffee</a> by
 				lesiakower via Pixabay
 			</p>
+			<p>
+				Sound effects: <a href="https://obsydianx.itch.io/interface-sfx-pack-1">Interface SFX Pack 1</a> by obsydianx
+			</p>
 			<p>Typeface: <a href="https://github.com/the-moonwitch/Cozette">Cozette</a> by Samhain &amp; contributors</p>
+			<p>Your audio preference is saved to local storage.</p>
 		</footer>
 	</body>
 </html>
 
 <script>
-const sync = () => {
-	const audio = document.querySelector<HTMLAudioElement>('#bgm')
-	const playing = audio !== null && !audio.paused
-	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-music-toggle]')) {
-		button.setAttribute('aria-pressed', String(playing))
-		button.textContent = playing ? '♪ Music: on' : '♪ Music: off'
+const STORAGE_KEY = 'tc2026-sound'
+
+const readPreference = () => {
+	try {
+		return localStorage.getItem(STORAGE_KEY) === 'on'
+	}
+	catch {
+		return false
 	}
 }
 
+const savePreference = (on: boolean) => {
+	try {
+		if (on) localStorage.setItem(STORAGE_KEY, 'on')
+		else localStorage.removeItem(STORAGE_KEY)
+	}
+	catch {
+		// Storage can be unavailable (private mode); the preference just won't stick.
+	}
+}
+
+const getAudio = () => document.querySelector<HTMLAudioElement>('#bgm')
+
+// True while a saved "on" preference is waiting for the first tap. Browsers don't allow
+// audio to start without one, so on a return visit sound starts on the first interaction.
+let pending = false
+
+const sync = () => {
+	const audio = getAudio()
+	const playing = audio !== null && !audio.paused
+	const label = playing ? '♪ Sound: on' : pending ? '♪ Sound: waiting' : '♪ Sound: off'
+	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-music-toggle]')) {
+		button.setAttribute('aria-pressed', String(playing || pending))
+		button.textContent = label
+	}
+}
+
+// Menu sound effects. They play through Web Audio, which starts far faster than
+// an <audio> element, and only while sound is on, so nothing makes noise unprompted.
+let context: AudioContext | undefined
+const buffers: Record<string, AudioBuffer> = {}
+
+const loadSfx = async () => {
+	const raw = document.body.dataset.sfxSources
+	if (!context || !raw) return
+
+	const sources = JSON.parse(raw) as Record<string, { opus: string, m4a: string }>
+	const useOpus = new Audio().canPlayType('audio/ogg; codecs=opus') !== ''
+
+	await Promise.all(
+		Object.entries(sources).map(async ([name, source]) => {
+			if (buffers[name] || !context) return
+
+			const response = await fetch(useOpus ? source.opus : source.m4a)
+			buffers[name] = await context.decodeAudioData(await response.arrayBuffer())
+		}),
+	)
+}
+
+const playSfx = (name: string) => {
+	const audio = getAudio()
+	const buffer = buffers[name]
+	if (!context || context.state !== 'running' || !buffer || !audio || audio.paused) return
+
+	const source = context.createBufferSource()
+	const gain = context.createGain()
+	gain.gain.value = 0.6
+	source.buffer = buffer
+	source.connect(gain).connect(context.destination)
+	source.start()
+}
+
+// Must run inside a user gesture (a tap or key press) so iOS and other browsers allow audio.
+const startSound = () => {
+	context ??= new AudioContext()
+	context.resume().catch(() => {})
+	loadSfx().catch(() => {})
+	getAudio()?.play().catch(() => {})
+}
+
+const stopSound = () => {
+	getAudio()?.pause()
+}
+
+const isToggle = (event: Event) => event.target instanceof Element && event.target.closest('[data-music-toggle]')
+
+const onFirstGesture = (event: Event) => {
+	// Let the sound button handle its own tap.
+	if (!pending || isToggle(event)) return
+
+	pending = false
+	startSound()
+	removeGestureListeners()
+}
+
+const removeGestureListeners = () => {
+	document.removeEventListener('pointerup', onFirstGesture)
+	document.removeEventListener('keydown', onFirstGesture)
+}
+
+const sfxName = (event: Event) =>
+	event.target instanceof Element ? event.target.closest<HTMLElement>('[data-sfx]')?.dataset.sfx : undefined
+
 document.addEventListener('click', (event) => {
-	if (!(event.target instanceof Element) || !event.target.closest('[data-music-toggle]')) return
+	if (isToggle(event)) {
+		const audio = getAudio()
+		if (!audio) return
 
-	const audio = document.querySelector<HTMLAudioElement>('#bgm')
-	if (!audio) return
+		if (pending) {
+			// Saved as on but not started yet: tapping turns it off.
+			pending = false
+			removeGestureListeners()
+			savePreference(false)
+			sync()
+		}
+		else if (audio.paused) {
+			savePreference(true)
+			startSound()
+		}
+		else {
+			savePreference(false)
+			stopSound()
+		}
+		return
+	}
 
-	if (audio.paused) audio.play().catch(() => {})
-	else audio.pause()
+	// Keyboard activation (Enter on a link) has no pointer events.
+	const name = sfxName(event)
+	if (name && event.detail === 0) playSfx(name)
 })
+
+// Play on release, before the click, to cut the lag. Scrolls never get here: a scroll cancels the pointer.
+document.addEventListener('pointerup', (event) => {
+	const name = sfxName(event)
+	if (name && event.isPrimary && event.button === 0) playSfx(name)
+})
+
+if (readPreference()) {
+	pending = true
+	document.addEventListener('pointerup', onFirstGesture)
+	document.addEventListener('keydown', onFirstGesture)
+}
 
 document.addEventListener('astro:page-load', sync)
 document.addEventListener('play', sync, true)
