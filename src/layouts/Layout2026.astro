@@ -1,4 +1,7 @@
 ---
+import { ClientRouter } from 'astro:transitions'
+import musicM4a from '../assets/2026/audio/morning-coffee.m4a'
+import musicOpus from '../assets/2026/audio/morning-coffee.opus'
 import '../styles/2026/theme.css'
 
 interface Props {
@@ -9,15 +12,25 @@ interface Props {
 const { title, backlink = true } = Astro.props
 ---
 
-<html lang="en">
+<html lang="en" class="tc2026-root">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title} | TurtleCon 2026</title>
+		<ClientRouter />
 	</head>
 	<body class="tc2026">
+		<audio id="bgm" loop preload="none" transition:persist>
+			<source src={musicOpus} type="audio/ogg; codecs=opus" />
+			<source src={musicM4a} type="audio/mp4" />
+		</audio>
 		<header>
-			{backlink && <a class="backlink" href="/2026">TurtleCon 2026</a>}
+			<div class="topbar">
+				{backlink && <a class="backlink" href="/2026">TurtleCon 2026</a>}
+				<button class="music-toggle" type="button" aria-pressed="false" data-music-toggle>
+					♪ Music: off
+				</button>
+			</div>
 			<div class="header-row">
 				<slot name="heading" />
 				<slot name="toc" />
@@ -26,5 +39,37 @@ const { title, backlink = true } = Astro.props
 		<main>
 			<slot />
 		</main>
+		<footer>
+			<p>
+				Music: <a href="https://pixabay.com/music/beats-morning-coffee-396750/">Morning Coffee</a> by
+				lesiakower via Pixabay
+			</p>
+			<p>Typeface: <a href="https://github.com/the-moonwitch/Cozette">Cozette</a> by Samhain &amp; contributors</p>
+		</footer>
 	</body>
 </html>
+
+<script>
+const sync = () => {
+	const audio = document.querySelector<HTMLAudioElement>('#bgm')
+	const playing = audio !== null && !audio.paused
+	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-music-toggle]')) {
+		button.setAttribute('aria-pressed', String(playing))
+		button.textContent = playing ? '♪ Music: on' : '♪ Music: off'
+	}
+}
+
+document.addEventListener('click', (event) => {
+	if (!(event.target instanceof Element) || !event.target.closest('[data-music-toggle]')) return
+
+	const audio = document.querySelector<HTMLAudioElement>('#bgm')
+	if (!audio) return
+
+	if (audio.paused) audio.play().catch(() => {})
+	else audio.pause()
+})
+
+document.addEventListener('astro:page-load', sync)
+document.addEventListener('play', sync, true)
+document.addEventListener('pause', sync, true)
+</script>

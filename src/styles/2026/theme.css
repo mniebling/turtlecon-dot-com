@@ -22,11 +22,16 @@
 	--pink: #ff9fdc;
 	--cyan: #7fe6dc;
 	--shadow: #0b0718;
+	--radius: 6px;
+	--keyline: #0b0718;
+	--rim: #8f83cc;
+	--rim-inner: rgb(0 0 0 / 0.35);
+	--panel-fill: linear-gradient(180deg, #2e2559, #1c1640);
+	--gray-fill: linear-gradient(180deg, #34313e, #211f29);
 	--shadow-pink: #7a3a8f;
 
 	margin: 0;
 	background-color: var(--bg);
-	background-image: url('./shell.svg');
 	color: var(--text);
 	font-family: 'Cozette 2026', ui-monospace, monospace;
 	font-size: 13px;
@@ -66,12 +71,12 @@
 
 .tc2026 .toc {
 	padding: 8px 16px;
-	background: var(--panel);
+	background: var(--panel-fill);
+	border-radius: var(--radius);
 	box-shadow:
-		0 -2px 0 0 var(--line),
-		0 2px 0 0 var(--line),
-		-2px 0 0 0 var(--line),
-		2px 0 0 0 var(--line);
+		0 0 0 1px var(--keyline),
+		inset 0 0 0 2px var(--rim),
+		inset 0 0 0 3px var(--rim-inner);
 }
 
 .tc2026 .toc ul {
@@ -91,7 +96,15 @@
 }
 
 .tc2026 .toc a {
-	text-decoration: none;
+	text-decoration: underline dotted;
+	text-decoration-color: rgb(127 230 220 / 0.4);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 4px;
+}
+
+.tc2026 .toc a:hover,
+.tc2026 .toc a:focus-visible {
+	text-decoration-color: currentcolor;
 }
 
 .tc2026 header {
@@ -105,26 +118,58 @@
 	align-self: stretch;
 }
 
+.tc2026 .topbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	align-self: stretch;
+	gap: 8px;
+}
+
+.tc2026 .music-toggle {
+	--rim: #5f5c69;
+
+	margin-left: auto;
+	padding: 4px 8px;
+	border: 0;
+	background: var(--gray-fill);
+	border-radius: var(--radius);
+	box-shadow:
+		0 0 0 1px var(--keyline),
+		inset 0 0 0 2px var(--rim),
+		inset 0 0 0 3px var(--rim-inner);
+	color: var(--muted);
+	font: inherit;
+	text-shadow: inherit;
+	cursor: pointer;
+}
+
+.tc2026 .music-toggle:hover,
+.tc2026 .music-toggle:focus-visible,
+.tc2026 .music-toggle[aria-pressed='true'] {
+	color: var(--text);
+}
+
 .tc2026 .header-row h1,
 .tc2026 .backlink {
 	margin: 0;
+	border-radius: var(--radius);
 	box-shadow:
-		0 -2px 0 0 var(--line),
-		0 2px 0 0 var(--line),
-		-2px 0 0 0 var(--line),
-		2px 0 0 0 var(--line);
+		0 0 0 1px var(--keyline),
+		inset 0 0 0 2px var(--rim),
+		inset 0 0 0 3px var(--rim-inner);
 }
 
 .tc2026 .header-row h1 {
 	padding: 12px 16px;
-	background: var(--panel);
+	background: var(--panel-fill);
 }
 
 .tc2026 .backlink {
-	--line: #45424f;
+	--rim: #5f5c69;
 
 	padding: 4px 8px;
-	background: #25222d;
+	background: var(--gray-fill);
 	color: var(--muted);
 	text-decoration: none;
 }
@@ -135,7 +180,28 @@
 }
 
 .tc2026 main {
-	padding-block: 16px 48px;
+	padding-block: 16px 24px;
+}
+
+.tc2026 footer {
+	box-sizing: border-box;
+	max-width: 640px;
+	margin-inline: auto;
+	padding: 0 16px 48px;
+	color: var(--muted);
+}
+
+.tc2026 footer p {
+	margin: 0;
+}
+
+.tc2026 footer a {
+	color: inherit;
+}
+
+.tc2026 footer a:hover,
+.tc2026 footer a:focus-visible {
+	color: var(--text);
 }
 
 .tc2026 h1 {
@@ -170,12 +236,12 @@
 .tc2026 main section {
 	margin-bottom: 16px;
 	padding: 12px 16px;
-	background: var(--panel);
+	background: var(--panel-fill);
+	border-radius: var(--radius);
 	box-shadow:
-		0 -2px 0 0 var(--line),
-		0 2px 0 0 var(--line),
-		-2px 0 0 0 var(--line),
-		2px 0 0 0 var(--line);
+		0 0 0 1px var(--keyline),
+		inset 0 0 0 2px var(--rim),
+		inset 0 0 0 3px var(--rim-inner);
 }
 
 .tc2026 main p {
@@ -233,12 +299,12 @@
 	padding: 14px 18px;
 	font-size: 20px;
 	line-height: 1.3;
-	background: var(--panel);
+	background: var(--panel-fill);
+	border-radius: var(--radius);
 	box-shadow:
-		0 -2px 0 0 var(--line),
-		0 2px 0 0 var(--line),
-		-2px 0 0 0 var(--line),
-		2px 0 0 0 var(--line);
+		0 0 0 1px var(--keyline),
+		inset 0 0 0 2px var(--rim),
+		inset 0 0 0 3px var(--rim-inner);
 	color: var(--text);
 	font-weight: 700;
 	text-decoration: none;
@@ -254,6 +320,20 @@
 	color: var(--pink);
 }
 
+
+/*
+ * The base shell grid is a fixed layer, like the glow layers below, so all
+ * the grids stay aligned while scrolling. (A scrolling body background would
+ * drift against the fixed layers and look doubled.)
+ */
+.tc2026-root::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -2;
+	pointer-events: none;
+	background-image: url('./shell.svg');
+}
 
 /*
  * Drifting glow: two layers, each a color gradient visible only through the
