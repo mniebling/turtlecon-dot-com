@@ -21,7 +21,7 @@ const sections: Section[] = [
 			{ name: 'Warsteiner Pilsner', location: 'Warstein, Germany', abv: 4.8 },
 			{ name: 'Old Irving "Shoto" Japanese Rice Lager', location: 'Chicago, IL', abv: 4.8 },
 			{ name: 'Haymarket "Speakerswagon" Pils', location: 'Chicago, IL', abv: 5 },
-			{ name: 'Oxbow "Wilde Moon" Farmhouse Ale w/ Elderflower & Honey', location: 'Newcastle, ME', abv: 5 },
+			{ name: 'Oxbow "Wilde Moon" Farmhouse Ale w/ Elderflower + Honey', location: 'Newcastle, ME', abv: 5 },
 			{ name: 'Two Brothers "Prairie Path" Golden Ale', location: 'Warrenville, IL', abv: 5.1 },
 			{ name: 'Art History "Good Morning Munich" Helles Lager', location: 'Geneva, IL', abv: 5.2 },
 			{ name: 'Lexington Brewing Vanilla Barrel Cream Ale', location: 'Lexington, KY', abv: 5.5 },
@@ -67,13 +67,13 @@ const sections: Section[] = [
 		],
 	},
 	{
-		title: 'Coffee & Tea',
+		title: 'Coffee + Tea',
 		drinks: [
 			{ name: 'Metric Crimson Decaf Cold Brew' },
 			{ name: 'Backlot "Flying Squirrel" Cold Brew' },
 			{ name: 'Rare Tea Cellars Masala Chai Rooibos' },
 			{ name: 'Taylors of Harrogate Assam Black Tea' },
-			{ name: 'Café de olla (Café Bustelo, canela & piloncillo)' },
+			{ name: 'Café de olla (Café Bustelo, canela + piloncillo)' },
 			{ name: 'Iced Chai Latte w/ Banana Cold Foam' },
 		],
 	},
@@ -82,6 +82,9 @@ const sections: Section[] = [
 const sortKey = (abv: Drink['abv']) => [abv].flat()[0] ?? 0
 
 const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+// Keep "+", "&" and "w/" attached to the word after them so they never end a line.
+const glue = (name: string) => name.replace(/ ([+&]|w\/) /g, ' $1\u00a0')
 
 for (const section of sections) {
 	section.drinks.sort((a, b) => sortKey(a.abv) - sortKey(b.abv))
@@ -109,17 +112,15 @@ for (const section of sections) {
 				<ul>
 					{drinks.map(({ name, location, abv }) => (
 						<li>
-							{name}
-							{location && (
+							<span class="name">{glue(name)}</span>
+							{(location || abv !== undefined) && (
 								<>
-									<span class="sep" aria-hidden="true"> · </span>
-									<span class="location">{location}</span>
-								</>
-							)}
-							{abv !== undefined && (
-								<>
-									<span class="sep" aria-hidden="true"> · </span>
-									<span class="abv">{[abv].flat().join('% / ')}%</span>
+									<span class="sep" aria-hidden="true">{'\u00a0·'}</span>{' '}
+									<span class="meta">
+										{location && <span class="location">{location}</span>}
+										{location && abv !== undefined && <span class="sep" aria-hidden="true"> · </span>}
+										{abv !== undefined && <span class="abv">{[abv].flat().join('% / ')}%</span>}
+									</span>
 								</>
 							)}
 						</li>
