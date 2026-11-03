@@ -269,7 +269,10 @@
 }
 
 .tc2026 li::before {
-	content: '▸ ';
+	content: '▸';
+	display: inline-block;
+	width: 16px;
+	text-indent: 0;
 	color: var(--pink);
 }
 
