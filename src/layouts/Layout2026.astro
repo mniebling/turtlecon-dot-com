@@ -13,9 +13,14 @@ import '../styles/2026/theme.css'
 interface Props {
 	title: string
 	backlink?: boolean
+	description?: string
 }
 
-const { title, backlink = true } = Astro.props
+const {
+	title,
+	backlink = true,
+	description = 'TurtleCon 2026 is a yearly gaming convention.',
+} = Astro.props
 
 const sfx = {
 	back: { opus: sfxBackOpus, m4a: sfxBackM4a },
@@ -28,6 +33,7 @@ const sfx = {
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
 		<title>{title} | TurtleCon 2026</title>
 		<ClientRouter />
 	</head>
@@ -96,7 +102,13 @@ let pending = false
 const sync = () => {
 	const audio = getAudio()
 	const playing = audio !== null && !audio.paused
-	const label = playing ? '♪ Sound: on' : pending ? '♪ Sound: waiting' : '♪ Sound: off'
+
+	const label = playing
+		? '♪ Sound: on'
+		: pending
+			? '♪ Sound: waiting'
+			: '♪ Sound: off'
+
 	for (const button of document.querySelectorAll<HTMLButtonElement>('[data-music-toggle]')) {
 		button.setAttribute('aria-pressed', String(playing || pending))
 		button.textContent = label
