@@ -11,7 +11,7 @@ TurtleCon is a yearly convention. Each year has its own theme, and past years mu
 - Each year is an explicit directory in `src/pages/<year>/` (e.g. `src/pages/2026/`). Don't use dynamic `[year]` routes.
 - Each year has its own layout in `src/layouts/Layout<year>.astro`. Pages in a year's directory use only that year's layout.
 - Pages for a year: `index.astro` (nav hub), `food.astro`, `drinks.astro`.
-- `/` redirects to the current year via `redirects` in `astro.config.ts`.
+- `/` redirects to the current year. Production (Netlify) uses a real 302 in `public/_redirects`, which avoids the white flash of Astro's generated redirect page. Local dev uses `redirects` in `astro.config.ts`.
 
 ## Style isolation
 
@@ -23,5 +23,5 @@ TurtleCon is a yearly convention. Each year has its own theme, and past years mu
 ## Starting a new year
 
 1. Copy the previous year's `src/pages/<year>/` and its layout to the new year. Rename the layout and update the imports and links.
-2. Update the `/` redirect in `astro.config.ts`.
+2. Update the `/` redirect in both `astro.config.ts` and `public/_redirects`.
 3. Leave all earlier years untouched.
