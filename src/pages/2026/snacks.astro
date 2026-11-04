@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout2026.astro'
+
+interface Section {
+	title: string
+	snacks: string[]
+}
+
+const sections: Section[] = [
+	{
+		title: 'Fresh Fruit',
+		snacks: ['Green Grapes', 'Blueberries', 'Blackberries', 'Bananas', 'Honeycrisp Apples', 'Clementines'],
+	},
+	{
+		title: 'Veggies + Dips',
+		snacks: ['Carrots', 'Cucumbers', 'Hummus', 'Guacamole', 'French Onion Dip', "Mateo's Medium Salsa"],
+	},
+	{
+		title: 'Chips + Crunchy',
+		snacks: [
+			'Tortilla Chips',
+			'SunChips 100% Whole Grain Chips, Variety Pack',
+			'Pretzel Crisps',
+			'Veggie Straws Garden Snacks Variety Pack (Sea Salt, Ranch, Cheddar, Apple Cinnamon)',
+			"Orville Redenbacher’s Popcorn",
+			'Seaweed Salt Snacks',
+			'Hot Wasabi Green Peas',
+			'Honey Roasted Sesame Sticks',
+		],
+	},
+	{
+		title: 'Savory + Protein',
+		snacks: [
+			'String Cheese',
+			"Jack Link's Beef Jerky Variety Pack",
+			'Primal Spirit Vegan Jerky',
+			'Perfect Bar Protein Bars, Mini Dark Chocolate Chip',
+		],
+	},
+	{
+		title: 'Sweet',
+		snacks: [
+			'Oreos',
+			"Grandma's Cookies Variety Pack",
+			"Annie's Organic Chocolate Chip Cookie Bites",
+			"That's it. Mini Fruit Bars",
+			'Hi-Chews',
+			'S’Mores',
+		],
+	},
+]
+
+const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+---
+
+<Layout title="Snacks">
+	<h1 slot="heading">Snacks</h1>
+	<nav slot="toc" class="toc" aria-label="Jump to section">
+		<ul>
+			{
+				sections.map(({ title }) => (
+					<li>
+						<a href={`#${slug(title)}`} data-sfx="cursor">{title}</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	{
+		sections.map(({ title, snacks }) => (
+			<section id={slug(title)}>
+				<h2>{title}</h2>
+				<ul>
+					{snacks.map((name) => (
+						<li>
+							<span class="name">{name}</span>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</Layout>
