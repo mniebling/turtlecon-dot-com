@@ -1,12 +1,19 @@
 ---
 import Layout from '../../layouts/Layout2026.astro'
 
+interface Wine {
+	name: string
+	location?: string
+	abv?: number | 'NA'
+}
+
 interface Day {
 	day: number
 	date: string
 	label: string
 	main: string
 	dessert: string
+	wines: Wine[]
 }
 
 const days: Day[] = [
@@ -16,6 +23,10 @@ const days: Day[] = [
 		label: 'November 5, 2026',
 		main: 'Lemongrass chicken peanut satay rice bowls',
 		dessert: 'Horchata pudding with sautéed cinnamon-maple apples',
+		wines: [
+			{ name: 'Matassa "Brutal Rouge" 2019', location: "Espira-de-l'Agly, France", abv: 10.5 },
+			{ name: 'Wölffer Estate "Spring in Bottle" Sparkling White', location: 'Sagaponack, NY', abv: 'NA' },
+		],
 	},
 	{
 		day: 2,
@@ -23,6 +34,12 @@ const days: Day[] = [
 		label: 'November 6, 2026',
 		main: 'Butter chicken + channa saag with spiced basmati rice + naan',
 		dessert: 'Mango lime ginger sorbet',
+		wines: [
+			{ name: 'Cantina Giardino "Gaia" Fiano 2015', location: 'Ariano Irpino, Italy', abv: 13.5 },
+			{ name: 'Clos Saron "Carte Blanche" 2015', location: 'Oregon House, CA' },
+			{ name: 'Donkey & Goat "Twinkle" Mourvèdre 2020', location: 'El Dorado, CA', abv: 11.3 },
+			{ name: 'Wölffer Estate "Spring in Bottle" Sparkling Rosé', location: 'Sagaponack, NY', abv: 'NA' },
+		],
 	},
 	{
 		day: 3,
@@ -30,6 +47,10 @@ const days: Day[] = [
 		label: 'November 7, 2026',
 		main: 'DIY pork shoulder and glazed mushroom baos',
 		dessert: 'Pineapple lychee mint sorbet',
+		wines: [
+			{ name: 'Clos des Vignes du Maynes Mâcon Rouge "Cuvée 910" Magnum', location: 'Mâcon, France' },
+			{ name: 'Origami Sake NA Zero', abv: 'NA' },
+		],
 	},
 	{
 		day: 4,
@@ -37,15 +58,21 @@ const days: Day[] = [
 		label: 'November 8, 2026',
 		main: 'Lemongrass shiitake congee + leftover bonanza',
 		dessert: 'Cut persimmons + asian pears w/ honey lime',
+		wines: [
+			{ name: 'Schmelzer "Zauber des Verzichts" Weissburgunder Orange', location: 'Gols, Austria' },
+			{ name: 'Pittnauer "Mash Pitt" 2018', location: 'Gols, Austria', abv: 12 },
+		],
 	},
 ]
+
+const glue = (name: string) => name.replace(/ ([+&]|w\/) /g, ' $1\u00a0')
 ---
 
 <Layout title="Food">
 	<h1 slot="heading">Food</h1>
 
 	{
-		days.map(({ day, date, label, main, dessert }) => (
+		days.map(({ day, date, label, main, dessert, wines }) => (
 			<section>
 				<h2>
 					Day {day} <time datetime={date}>{label}</time>
@@ -57,7 +84,42 @@ const days: Day[] = [
 				<p>
 					{dessert}
 				</p>
+				<ul class="wines">
+					{wines.map(({ name, location, abv }) => (
+						<li>
+							<span class="name">{glue(name)}</span>
+							{(location || abv !== undefined) && (
+								<>
+									<span class="sep" aria-hidden="true">{'\u00a0·'}</span>{' '}
+									<span class="meta">
+										{location && <span class="location">{location}</span>}
+										{location && abv !== undefined && <span class="sep" aria-hidden="true"> · </span>}
+										{abv !== undefined && <span class="abv">{abv === 'NA' ? 'NA' : `${abv}%`}</span>}
+									</span>
+								</>
+							)}
+						</li>
+					))}
+				</ul>
 			</section>
 		))
 	}
 </Layout>
+
+
+<style>
+	.wines {
+		padding-top: 4px;
+		border-top: 1px dashed var(--line);
+	}
+
+	.wines li {
+		padding-left: 0;
+		text-indent: 0;
+		border-bottom: 0;
+	}
+
+	.wines li::before {
+		content: none;
+	}
+</style>
