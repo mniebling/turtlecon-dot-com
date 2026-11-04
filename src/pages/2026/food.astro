@@ -90,10 +90,10 @@ const glue = (name: string) => name.replace(/ ([+&]|w\/) /g, ' $1\u00a0')
 							<span class="name">{glue(name)}</span>
 							{(location || abv !== undefined) && (
 								<>
-									<span class="sep" aria-hidden="true">{'\u00a0·'}</span>{' '}
+									<span class="sep" aria-hidden="true">{'\u00a0•'}</span>{' '}
 									<span class="meta">
 										{location && <span class="location">{location}</span>}
-										{location && abv !== undefined && <span class="sep" aria-hidden="true"> · </span>}
+										{location && abv !== undefined && <span class="sep" aria-hidden="true"> • </span>}
 										{abv !== undefined && <span class="abv">{abv === 'NA' ? 'NA' : `${abv}%`}</span>}
 									</span>
 								</>

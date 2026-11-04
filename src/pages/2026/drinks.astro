@@ -112,10 +112,10 @@ for (const section of sections) {
 							<span class="name">{glue(name)}</span>
 							{(location || abv !== undefined) && (
 								<>
-									<span class="sep" aria-hidden="true">{'\u00a0·'}</span>{' '}
+									<span class="sep" aria-hidden="true">{'\u00a0•'}</span>{' '}
 									<span class="meta">
 										{location && <span class="location">{location}</span>}
-										{location && abv !== undefined && <span class="sep" aria-hidden="true"> · </span>}
+										{location && abv !== undefined && <span class="sep" aria-hidden="true"> • </span>}
 										{abv !== undefined && <span class="abv">{[abv].flat().join('% / ')}%</span>}
 									</span>
 								</>
