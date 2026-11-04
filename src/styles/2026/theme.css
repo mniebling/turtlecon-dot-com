@@ -456,3 +456,19 @@
 		opacity: 0.2;
 	}
 }
+
+/*
+ * Mascot watermark: a pre-tinted, filled silhouette (tak-filled.png) that is
+ * mostly opaque, so it hides the grid and glow behind the whole head.
+ */
+.tc2026-root::after {
+	content: '';
+	position: fixed;
+	right: -6vmin;
+	bottom: -6vmin;
+	z-index: -1;
+	width: min(40vw, 320px);
+	aspect-ratio: 1;
+	pointer-events: none;
+	background: url('../../assets/2026/img/tak-filled.png') center / contain no-repeat;
+}

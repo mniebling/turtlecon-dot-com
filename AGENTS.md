@@ -25,3 +25,9 @@ TurtleCon is a yearly convention. Each year has its own theme, and past years mu
 1. Copy the previous year's `src/pages/<year>/` and its layout to the new year. Rename the layout and update the imports and links.
 2. Update the `/` redirect in both `astro.config.ts` and `public/_redirects`.
 3. Leave all earlier years untouched.
+
+## Icons
+
+- Each year has its own icons in `public/`, named for the year: `favicon-<year>.png` and `apple-touch-icon-<year>.png`. They're linked from that year's layout, so a new year gets new URLs and nothing stale is cached.
+- Links carry a `?v=1` query string. If you change an icon within the same year, bump it (`?v=2`) so browsers, especially Safari, re-fetch it.
+- The favicon is a transparent-background shape (no box), because Safari drew a white border around an opaque square. The apple-touch-icon is an opaque full-bleed square, as iOS expects.
